@@ -1,0 +1,16 @@
+::backdrop {
+  background: #aaa;
+  opacity: 0.75;
+}
+
+dialog {
+  margin: auto;
+  padding: 2rem;
+}
+
+.form-dhcp {
+  display: flex;
+  gap: 1rem;
+  flex-flow: column nowrap;
+  margin-bottom: 4rem;
+}

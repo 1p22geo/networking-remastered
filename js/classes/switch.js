@@ -7,11 +7,12 @@ class Switch {
   getpos() {
     return {
       x: parseInt(this.htmlElem.style.left || "120"),
-      cx: parseInt(this.htmlElem.style.left || "120") + 25,
+      cx:
+        parseInt(this.htmlElem.style.left || "120") + ICON_SIZES.SWITCH[0] / 2,
       y: parseInt(this.htmlElem.style.top || "0"),
-      cy: parseInt(this.htmlElem.style.top || "0") + 25,
-      width: 50,
-      height: 50,
+      cy: parseInt(this.htmlElem.style.top || "0") + ICON_SIZES.SWITCH[0] / 2,
+      width: ICON_SIZES.SWITCH[0],
+      height: ICON_SIZES.SWITCH[1],
     };
   }
   inrect(x, y) {

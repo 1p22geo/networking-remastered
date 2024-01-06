@@ -6,12 +6,25 @@ class Packet {
     this.payload;
     this.x = src.getpos().cx;
     this.y = src.getpos().cy;
-    this.width = 40;
-    this.height = 30;
+    this.width = ICON_SIZES.PACKET[0];
+    this.height = ICON_SIZES.PACKET[0];
     this.speed = 2;
   }
 
-  onHTML() {}
+  onHTML() {
+    let layers = [];
+    let payload = this.payload;
+    while (true) {
+      if (!payload) break;
+      layers.push(payload);
+      payload = payload.payload;
+    }
+    this.htmlElem.querySelector(".tooltip").innerHTML = prep(
+      `${layers.map((l) => l._packtype).join(" / ")}<br/>
+${layers.map((l) => l.render()).join("<hr/>")}
+`,
+    );
+  }
 
   propagate() {
     let dx = this.dest.getpos().cx - this.x;

@@ -25,3 +25,7 @@ var randMAC = () => {
     randHex(2)
   );
 };
+
+var prep = (msg) => {
+  return msg.replace(" ", "&nbsp;").replace("\n", "<br/>");
+};

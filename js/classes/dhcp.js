@@ -1,9 +1,22 @@
-class Host {
+class DHCPserver {
   constructor(elem) {
     this.htmlElem = elem;
     this.mac = randMAC();
-    this.ip = undefined;
+    this.ip = "0.0.0.0";
+    this.subnet = "/24";
+    this.assignedAddresses = [];
     this.drawData();
+
+    this.dialog = this.htmlElem.querySelector("dialog");
+    this.htmlElem.querySelector(".dhcp-button").onclick = () => {
+      this.dialog.showModal();
+    };
+    this.htmlElem.querySelector(".close-dhcp").onclick = () => {
+      this.dialog.close();
+    };
+    this.htmlElem.querySelector(".form-dhcp").onchange = () => {
+      this.DHCPConfig();
+    };
   }
   getpos() {
     return {
@@ -25,24 +38,12 @@ class Host {
   }
   drawData() {
     this.htmlElem.querySelector(".mac").innerText = this.mac;
-    this.htmlElem.querySelector(".ip").innerText = this.ip;
-    this.htmlElem.querySelector(".dhcp-button").onclick =
-      this.DHCPConfig.bind(this);
+    this.htmlElem.querySelector(".ip").innerText = this.ip + this.subnet;
+    this.htmlElem.querySelector("[name=ip]").value = this.ip;
   }
   onRecv(packet) {}
   DHCPConfig() {
-    window.links.forEach((link) => {
-      if (link.start == this) {
-        const dest = link.end;
-        const pack = new Packet(this, dest);
-        const eth = new Ether(this.mac, ETHER_BROADCAST);
-        pack.payload = eth;
-        const ip = new IP("0.0.0.0", "255.255.255.255");
-        eth.payload = ip;
-        const dhcpd = new DHCPD("DISCOVER");
-        ip.payload = dhcpd;
-        window.sendpack(pack);
-      }
-    });
+    this.ip = this.htmlElem.querySelector("[name=ip]").value || "";
+    this.drawData();
   }
 }

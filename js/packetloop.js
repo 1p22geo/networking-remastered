@@ -1,8 +1,10 @@
 window.sendpack = (packet) => {
   const div = document.createElement("div");
   div.innerHTML = `
-<div class="packet">
+<div class="packet tooltip-container">
   <img src="img/packet.png" />
+  <pre class="tooltip">
+  </pre>
 </div>
 `;
   document.querySelector("#canvas").appendChild(div);
@@ -12,9 +14,15 @@ window.sendpack = (packet) => {
 };
 
 window.packets = [];
-
+window.pause = false;
+document.body.onkeydown = (e) => {
+  if (e.keyCode == 32) window.pause = true;
+};
+document.body.onkeyup = (e) => {
+  if (e.keyCode == 32) window.pause = false;
+};
 setInterval(() => {
   window.packets.forEach((packet) => {
-    packet.propagate();
+    if (!window.pause) packet.propagate();
   });
 }, 50);
