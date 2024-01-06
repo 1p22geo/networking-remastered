@@ -46,7 +46,7 @@ class DHCPD {
 var flatten_layers = (packet) => {
   // Flattens a packet with its packet-payload structure (each layer holds the next one as a payload) into an array of layer-specific objects
   let layers = [];
-  let payload = payload.payload;
+  let payload = packet.payload;
   while (true) {
     if (!payload) break;
     layers.push(payload);
