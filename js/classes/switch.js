@@ -1,6 +1,7 @@
 class Switch {
   constructor(elem) {
     this.htmlElem = elem;
+    this.switchTable = {};
 
     this.drawData();
   }
@@ -23,7 +24,15 @@ class Switch {
     if (y > pos.y + pos.height) return false;
     return true;
   }
-  drawData() {}
+  drawData() {
+    const ul = this.htmlElem.querySelector(".switch-hosts");
+    ul.textContent = "";
+    Array.from(Object.keys(this.switchTable)).forEach((mac) => {
+      let el = document.createElement("li");
+      el.innerText = mac;
+      ul.appendChild(el);
+    });
+  }
   flood(packet) {
     window.links.forEach((link) => {
       if (link.start == this && link.end != packet.src) {
@@ -34,7 +43,30 @@ class Switch {
       }
     });
   }
+  forward(packet, device) {
+    // I know theoretically we should forward packets to switch ports instead of devices.
+    // But hardware-like functionality including actual ethernet sockets and physical ports has not been implemented yet.
+    // Which means the switch table maps MAC addresses to physical devices instead of physical switch ports.
+    // Once again, I am sorry for making such a simplification to the network model.
+    //
+    // If you want something more resembling actual networking, go buy Cisco Packet Tracer.
+    // It's much better.
+
+    const pack = new Packet(this, device);
+    pack.payload = packet.payload;
+    window.sendpack(pack);
+  }
   onRecv(packet) {
+    const layers = flatten_layers(packet);
+    if (layers[0]._packtype == "Ether") {
+      const mac = layers[0].src;
+      this.switchTable[mac] = packet.src;
+      this.drawData();
+      if (this.switchTable.hasOwnProperty(layers[0].dest)) {
+        this.forward(packet, this.switchTable[layers[0].dest]);
+        return;
+      }
+    }
     this.flood(packet);
   }
 }

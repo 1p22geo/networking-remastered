@@ -4,6 +4,9 @@
   z-index: 9;
   text-align: center;
 }
+.draggable:hover {
+  z-index: 11;
+}
 
 hr {
   margin: 0.5rem;
@@ -15,7 +18,7 @@ hr {
   visibility: hidden;
   position: absolute;
   background: #fff;
-  z-index: 11;
+  z-index: 12;
   border-bottom: 2px solid #ccc;
   border-top: 2px solid #ccc;
 }

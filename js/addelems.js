@@ -40,7 +40,11 @@ function addSwitch() {
      <img src="img/switch.png" />
   </div>
   <div class="tooltip">
-    Switch
+    <h2>Switch</h2>
+    Mapped hosts
+    <ul class="switch-hosts">
+
+    </ul>
     <div class="actionbar">
       <img src="img/DHCP.png" class="button reset-button"/>
     </div>

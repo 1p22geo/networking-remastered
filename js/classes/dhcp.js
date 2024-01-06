@@ -21,11 +21,11 @@ class DHCPserver {
   getpos() {
     return {
       x: parseInt(this.htmlElem.style.left || "120"),
-      cx: parseInt(this.htmlElem.style.left || "120") + ICON_SIZES.HOST[0] / 2,
+      cx: parseInt(this.htmlElem.style.left || "120") + ICON_SIZES.DHCP[0] / 2,
       y: parseInt(this.htmlElem.style.top || "0"),
-      cy: parseInt(this.htmlElem.style.top || "0") + ICON_SIZES.HOST[1] / 2,
-      width: ICON_SIZES.HOST[0],
-      height: ICON_SIZES.HOST[1],
+      cy: parseInt(this.htmlElem.style.top || "0") + ICON_SIZES.DHCP[1] / 2,
+      width: ICON_SIZES.DHCP[0],
+      height: ICON_SIZES.DHCP[1],
     };
   }
   inrect(x, y) {
@@ -44,7 +44,6 @@ class DHCPserver {
   onRecv(packet) {
     const layers = flatten_layers(packet);
     if (layers.map((l) => l._packtype).includes("DHCPD")) {
-      console.log("Handling DHCP request");
       const mac = layers[0].src;
       let offerIP = () => {
         window.links.forEach((link) => {
