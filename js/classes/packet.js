@@ -11,10 +11,7 @@ class Packet {
     this.speed = 2;
   }
 
-  onHTML() {
-    this.htmlElem.style.left = this.x + "px";
-    this.htmlElem.style.top = this.y + "px";
-  }
+  onHTML() {}
 
   propagate() {
     let dx = this.dest.getpos().cx - this.x;
@@ -28,6 +25,9 @@ class Packet {
     this.y += dy * this.speed;
 
     if (Math.abs(this.dest.getpos().cx - this.x) < 10) {
+      if (this.dest.onRecv) {
+        this.dest.onRecv(this);
+      }
       this.htmlElem.remove();
       this.htmlElem = undefined;
       const index = window.packets.indexOf(this);

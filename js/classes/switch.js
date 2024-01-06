@@ -1,8 +1,7 @@
-class Host {
+class Switch {
   constructor(elem) {
     this.htmlElem = elem;
-    this.mac = randMAC();
-    this.ip = undefined;
+
     this.drawData();
   }
   getpos() {
@@ -23,20 +22,18 @@ class Host {
     if (y > pos.y + pos.height) return false;
     return true;
   }
-  drawData() {
-    this.htmlElem.querySelector(".mac").innerText = this.mac;
-    this.htmlElem.querySelector(".ip").innerText = this.ip;
-    this.htmlElem.querySelector(".dhcp-button").onclick =
-      this.DHCPConfig.bind(this);
-  }
-  onRecv(packet) {}
-  DHCPConfig() {
+  drawData() {}
+  flood(packet) {
     window.links.forEach((link) => {
-      if (link.start == this) {
+      if (link.start == this && link.end != packet.src) {
         const dest = link.end;
         const pack = new Packet(this, dest);
+        pack.payload = packet.payload;
         window.sendpack(pack);
       }
     });
+  }
+  onRecv(packet) {
+    this.flood(packet);
   }
 }

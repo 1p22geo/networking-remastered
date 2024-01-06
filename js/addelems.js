@@ -31,3 +31,24 @@ function addHost() {
   window.devices.push(host);
   document.querySelector("#canvas").appendChild(div);
 }
+
+function addSwitch() {
+  let div = document.createElement("div");
+  div.innerHTML = `
+<div class="draggable">
+   <div class="handle">
+     <img src="img/switch.png" />
+  </div>
+  <div class="tooltip">
+    Switch
+    <div class="actionbar">
+      <img src="img/DHCP.png" class="button reset-button"/>
+    </div>
+  </div>
+</div>
+`;
+  dragElement(div.children[0]);
+  sw = new Switch(div.children[0]);
+  window.devices.push(sw);
+  document.querySelector("#canvas").appendChild(div);
+}

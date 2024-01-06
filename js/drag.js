@@ -1,6 +1,5 @@
 document.addEventListener("contextmenu", (event) => event.preventDefault());
 document.querySelectorAll(".draggable").forEach((elem) => {
-  console.log("Assinging event listener");
   dragElement(elem);
 });
 
@@ -84,7 +83,6 @@ function dragElement(elmnt) {
       elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
     }
     if (window.action == "connect") {
-      console.log("setting end");
       linkendx = e.clientX;
       linkendy = e.clientY;
     }
