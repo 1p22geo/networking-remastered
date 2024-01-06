@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Network Simulation</title>
+    <link rel="stylesheet" href="style/clean.css" />
+    <link rel="stylesheet" href="style/main.css" />
+    <script src="js/host.js" defer></script>
+    <script src="js/actions.js" defer></script>
+    <script src="js/addelems.js" defer></script>
+    <script src="js/drag.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <div class="divider">
+          <div class="line"></div>
+          actions
+          <div class="line"></div>
+        </div>
+        <div class="button" id="cursor">
+          <img src="img/cursor.svg" width="80px" height="80px" />
+        </div>
+        <div class="button" id="connect">
+          <img src="img/connect.svg" width="80px" height="80px" />
+        </div>
+        <div class="divider">
+          <div class="line"></div>
+          add devices
+          <div class="line"></div>
+        </div>
+        <div id="addhost" class="button" onclick="addHost()">
+          <img src="img/host.png" />
+        </div>
+      </aside>
+      <div id="canvas">
+        <canvas id="maincanvas"></canvas>
+      </div>
+    </div>
+  </body>
+</html>

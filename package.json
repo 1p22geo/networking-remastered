@@ -1,0 +1,12 @@
+{
+  "name": "networksim",
+  "version": "1.0.0",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^3.1.1"
+  },
+  "scripts": {
+    "format": "prettier -c .",
+    "format:fix": "prettier -w ."
+  }
+}
