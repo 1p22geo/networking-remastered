@@ -2,7 +2,7 @@ class Host {
   constructor(elem) {
     this.htmlElem = elem;
     this.mac = randMAC();
-    this.ip = undefined;
+    this.ip = "0.0.0.0";
     this.drawData();
   }
   getpos() {
@@ -29,7 +29,31 @@ class Host {
     this.htmlElem.querySelector(".dhcp-button").onclick =
       this.DHCPConfig.bind(this);
   }
-  onRecv(packet) {}
+  onRecv(packet) {
+    const layers = flatten_layers(packet);
+    if (layers.map((l) => l._packtype).includes("DHCPD")) {
+      if (layers[2].msg == "ACK") {
+        this.ip = layers[1].dest;
+        this.drawData();
+      }
+      if (layers[2].msg == "OFFER") {
+        const mac = layers[0].src;
+        window.links.forEach((link) => {
+          if (link.start == this) {
+            const dest = link.end;
+            const pack = new Packet(this, dest);
+            const eth = new Ether(this.mac, mac);
+            pack.payload = eth;
+            const ip = new IP(layers[1].dest, layers[1].src);
+            eth.payload = ip;
+            const dhcpd = new DHCPD("REQUEST");
+            ip.payload = dhcpd;
+            window.sendpack(pack);
+          }
+        });
+      }
+    }
+  }
   DHCPConfig() {
     window.links.forEach((link) => {
       if (link.start == this) {
