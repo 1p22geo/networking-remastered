@@ -14,15 +14,15 @@
   border-top: 2px solid #ccc;
 }
 
-.draggable:hover>.tooltip {
+.draggable:hover > .tooltip {
   visibility: visible;
 }
 
-.tooltip>table{
+.tooltip > table {
   border-collapse: collapse;
 }
 
-.tooltip>table td{
+.tooltip > table td {
   padding: 1rem;
   border-top: 1px solid #ddd;
 }

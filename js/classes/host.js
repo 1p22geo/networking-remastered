@@ -1,8 +1,8 @@
 class Host {
   constructor(elem) {
     this.htmlElem = elem;
-    this.mac = randMAC()
-    this.ip  = undefined;
+    this.mac = randMAC();
+    this.ip = undefined;
     this.drawData();
   }
   getpos() {
@@ -24,20 +24,19 @@ class Host {
     return true;
   }
   drawData() {
-    this.htmlElem.querySelector(".mac").innerText = this.mac
-    this.htmlElem.querySelector(".ip").innerText = this.ip
-    this.htmlElem.querySelector(".dhcp-button").onclick = this.DHCPConfig.bind(this)
+    this.htmlElem.querySelector(".mac").innerText = this.mac;
+    this.htmlElem.querySelector(".ip").innerText = this.ip;
+    this.htmlElem.querySelector(".dhcp-button").onclick =
+      this.DHCPConfig.bind(this);
   }
-  onRecv(packet){
-
-  }
+  onRecv(packet) {}
   DHCPConfig() {
-    window.links.forEach(link => {
-      if(link.start == this){
-        const dest = link.end
-        const pack = new Packet(this, dest)
-        console.log(`${this.mac} sending DHCP to ${dest.mac}`)
-        window.sendpack(pack)
+    window.links.forEach((link) => {
+      if (link.start == this) {
+        const dest = link.end;
+        const pack = new Packet(this, dest);
+        console.log(`${this.mac} sending DHCP to ${dest.mac}`);
+        window.sendpack(pack);
       }
     });
   }
