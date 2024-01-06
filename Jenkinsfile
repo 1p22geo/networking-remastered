@@ -1,6 +1,6 @@
 pipeline {
     environment {
-      registry = "1p22geo/network-sim"
+      registry = "1p22geo/networksim"
       registryCredential = 'dockerhub_id'
       dockerImage = ''
     }
@@ -19,14 +19,14 @@ pipeline {
         stage('Bundle and compress app') {
             steps {
               sh 'tar --exclude=node_modules -czvf networksim.tar.gz *'
-              archiveArtifacts networksim.tar.gz
+              archiveArtifacts artifacts: 'networksim.tar.gz'
             }
         }
         stage('Build Docker image'){
           steps {
             script {
               if (env.BRANCH_NAME == 'master'){
-                dockerImage = docker.build "1p22geo/network-sim:${env.BUILD_TAG}"
+                dockerImage = docker.build "1p22geo/networksim:${env.BUILD_TAG}"
               }
             }
           }
