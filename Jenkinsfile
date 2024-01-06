@@ -26,7 +26,7 @@ pipeline {
           steps {
             script {
               if (env.BRANCH_NAME == 'master'){
-                dockerImage = docker.build "1p22geo/networksim:${env.BUILD_TAG}"
+                dockerImage = docker.build "1p22geo/networksim:latest"
               }
             }
           }

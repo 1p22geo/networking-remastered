@@ -1,7 +1,30 @@
 .draggable {
+  background: #fff;
   position: absolute;
   z-index: 9;
   text-align: center;
+}
+
+.tooltip {
+  visibility: hidden;
+  position: absolute;
+  background: #fff;
+  z-index: 11;
+  border-bottom: 2px solid #ccc;
+  border-top: 2px solid #ccc;
+}
+
+.draggable:hover>.tooltip {
+  visibility: visible;
+}
+
+.tooltip>table{
+  border-collapse: collapse;
+}
+
+.tooltip>table td{
+  padding: 1rem;
+  border-top: 1px solid #ddd;
 }
 
 .draggable > .handle {
@@ -54,7 +77,16 @@ canvas {
   background: #ccc;
 }
 
+.button {
+  cursor: pointer;
+}
+
 .button.active {
   box-shadow: 0px 0px 5px 5px #10a5f0;
   background: #10a5f0;
+}
+
+.packet {
+  position: absolute;
+  background: #fff;
 }

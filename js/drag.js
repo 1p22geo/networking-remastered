@@ -115,6 +115,7 @@ function dragElement(elmnt) {
           if (l.start == end && l.end == me) add = false;
         });
         if (add) window.links.push({ start: me, end: end });
+        if (add) window.links.push({ start: end, end: me });
       }
     }
     // stop moving when mouse button is released:
