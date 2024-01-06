@@ -1,5 +1,5 @@
 window.devices = [];
-window.links = []
+window.links = [];
 
 function addHost() {
   let div = document.createElement("div");

@@ -9,12 +9,11 @@ let linkstarty = 0;
 let linkendx = 0;
 let linkendy = 0;
 
-function drawLink(ctx, startx, starty, endx, endy){
-ctx.beginPath();
-    ctx.moveTo(startx - 120, starty);
-   ctx.lineTo(endx - 120, endy);
-    ctx.stroke();
-
+function drawLink(ctx, startx, starty, endx, endy) {
+  ctx.beginPath();
+  ctx.moveTo(startx - 120, starty);
+  ctx.lineTo(endx - 120, endy);
+  ctx.stroke();
 }
 
 function renderCanvas() {
@@ -26,15 +25,21 @@ function renderCanvas() {
     const ctx = canvas.getContext("2d");
 
     ctx.clearRect(0, 0, width, height);
-    drawLink(ctx, linkstartx, linkstarty, linkendx, linkendy)
-    window.links.forEach(link => {
-      drawLink(ctx, link.start.getpos().cx, link.start.getpos().cy, link.end.getpos().cx, link.end.getpos().cy)      
+    drawLink(ctx, linkstartx, linkstarty, linkendx, linkendy);
+    window.links.forEach((link) => {
+      drawLink(
+        ctx,
+        link.start.getpos().cx,
+        link.start.getpos().cy,
+        link.end.getpos().cx,
+        link.end.getpos().cy,
+      );
     });
-      }
+  }
 }
 
-window.addEventListener('resize', renderCanvas);
-window.addEventListener('scroll', renderCanvas);
+window.addEventListener("resize", renderCanvas);
+window.addEventListener("scroll", renderCanvas);
 function dragElement(elmnt) {
   var pos1 = 0,
     pos2 = 0,
@@ -89,27 +94,27 @@ function dragElement(elmnt) {
   function closeDragElement() {
     let me;
     let end;
-    window.devices.forEach(dev=>{
-      if(dev.inrect(linkstartx, linkstarty)){
-        me = dev
+    window.devices.forEach((dev) => {
+      if (dev.inrect(linkstartx, linkstarty)) {
+        me = dev;
       }
-    })
-    if(me){
-      window.devices.forEach(dev=>{
-        if(dev.inrect(linkendx, linkendy)){
-          end = dev
+    });
+    if (me) {
+      window.devices.forEach((dev) => {
+        if (dev.inrect(linkendx, linkendy)) {
+          end = dev;
         }
-      })
+      });
     }
-    if(end){
-      if(me){
+    if (end) {
+      if (me) {
         let add = true;
-        
-        window.links.forEach(l => {
-          if(l.start==me && l.end==end)add = false;
-          if(l.start==end && l.end==me)add = false;
+
+        window.links.forEach((l) => {
+          if (l.start == me && l.end == end) add = false;
+          if (l.start == end && l.end == me) add = false;
         });
-        if(add) window.links.push({start: me, end: end})
+        if (add) window.links.push({ start: me, end: end });
       }
     }
     // stop moving when mouse button is released:
