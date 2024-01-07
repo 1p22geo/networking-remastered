@@ -11,6 +11,22 @@ class Ether {
   dest MAC:&nbsp;&nbsp;&nbsp;${this.dest}`);
   }
 }
+
+class ARP {
+  constructor(src, dest, msg) {
+    this.src = src;
+    this.dest = dest;
+    this.msg = msg;
+    this._layer = "L3";
+    this._packtype = "ARP";
+  }
+  render() {
+    return prep(`ARP ${this.msg} ->
+  source address:&nbsp;${this.src}
+  dest address:&nbsp;&nbsp;&nbsp;${this.dest}`);
+  }
+}
+
 class IP {
   constructor(src, dest) {
     this.src = src;
@@ -39,7 +55,11 @@ class DHCPD {
     this._packtype = "DHCPD";
   }
   render() {
-    return prep(`DHCP&nbsp;${this.msg}`);
+    return prep(
+      `DHCP&nbsp;${this.msg}${
+        this.config ? "<br/>" + JSON.stringify(this.config) : ""
+      }`,
+    );
   }
 }
 
@@ -54,3 +74,14 @@ var flatten_layers = (packet) => {
   }
   return layers;
 };
+
+class ICMP {
+  constructor(msg) {
+    this.msg = msg;
+    this._layer = "L4";
+    this._packtype = "ICMP";
+  }
+  render() {
+    return prep(`ICMP&nbsp;${this.msg}`);
+  }
+}

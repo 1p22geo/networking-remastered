@@ -8,7 +8,7 @@ dialog {
   padding: 2rem;
 }
 
-.form-dhcp {
+.form {
   display: flex;
   gap: 1rem;
   flex-flow: column nowrap;

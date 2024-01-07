@@ -3,6 +3,10 @@ class Host {
     this.htmlElem = elem;
     this.mac = randMAC();
     this.ip = "0.0.0.0";
+    this.subnet = "/24";
+    this.gateway = "0.0.0.0";
+    this.ARPtable = {};
+    this.TXqueue = [];
     this.drawData();
     this.dialog = this.htmlElem.querySelector("dialog");
     this.htmlElem.querySelector(".config-button").onclick = () => {
@@ -33,14 +37,61 @@ class Host {
     if (y > pos.y + pos.height) return false;
     return true;
   }
+  sendL3(packet) {
+    const layers = flatten_layers(packet);
+    if (layers[0]._layer != "L3") {
+      throw "Use the low-level window.sendpack instead.";
+    }
+    const ip = layers[0].dest;
+    if (!this.ARPtable.hasOwnProperty(ip)) {
+      this.discover(ip);
+      this.TXqueue.push(packet);
+      return;
+    }
+    window.links.forEach((link) => {
+      if (link.start == this) {
+        const dest = link.end;
+        const pack = new Packet(this, dest);
+        const eth = new Ether(this.mac, this.ARPtable[ip]);
+        pack.payload = eth;
+        eth.payload = packet;
+        window.sendpack(pack);
+      }
+    });
+  }
+  discover(ip) {
+    if (this.ARPtable.hasOwnProperty(ip)) return;
+    window.links.forEach((link) => {
+      if (link.start == this) {
+        const dest = link.end;
+        const pack = new Packet(this, dest);
+        const eth = new Ether(this.mac, ETHER_BROADCAST);
+        pack.payload = eth;
+        const arp = new ARP(this.ip, ip, "REQUEST");
+        eth.payload = arp;
+        window.sendpack(pack);
+      }
+    });
+  }
+  pingGW() {
+    const ip = new IP(this.ip, this.gateway);
+    const icmp = new ICMP("PING");
+    ip.payload = icmp;
+    this.sendL3(ip);
+  }
   drawData() {
+    this.htmlElem.querySelector("[name=gw]").value = this.gateway;
     this.htmlElem.querySelector("[name=ip]").value = this.ip;
     this.htmlElem.querySelector(".mac").innerText = this.mac;
-    this.htmlElem.querySelector(".ip").innerText = this.ip;
+    this.htmlElem.querySelector(".gw").innerText = this.gateway;
+    this.htmlElem.querySelector(".ip").innerText = this.ip + this.subnet;
     this.htmlElem.querySelector(".dhcp-button").onclick =
       this.DHCPConfig.bind(this);
+    this.htmlElem.querySelector(".ping-button").onclick =
+      this.pingGW.bind(this);
   }
   updateConfig() {
+    this.gateway = this.htmlElem.querySelector("[name=gw]").value;
     this.ip = this.htmlElem.querySelector("[name=ip]").value;
     this.drawData();
   }
@@ -49,6 +100,8 @@ class Host {
     if (layers.map((l) => l._packtype).includes("DHCPD")) {
       if (layers[2].msg == "ACK") {
         this.ip = layers[1].dest;
+        this.gateway = layers[2].config.gateway;
+        this.subnet = layers[2].config.subnet;
         this.drawData();
       }
       if (layers[2].msg == "OFFER") {

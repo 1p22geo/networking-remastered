@@ -3,6 +3,7 @@ class DHCPserver {
     this.htmlElem = elem;
     this.mac = randMAC();
     this.ip = "0.0.0.0";
+    this.gateway = "0.0.0.0";
     this.subnet = "/24";
     this.assignedAddresses = {};
     this.drawData();
@@ -39,7 +40,9 @@ class DHCPserver {
   drawData() {
     this.htmlElem.querySelector(".mac").innerText = this.mac;
     this.htmlElem.querySelector(".ip").innerText = this.ip + this.subnet;
+    this.htmlElem.querySelector(".gw").innerText = this.gateway;
     this.htmlElem.querySelector("[name=ip]").value = this.ip;
+    this.htmlElem.querySelector("[name=gw]").value = this.gateway;
   }
   onRecv(packet) {
     const layers = flatten_layers(packet);
@@ -56,6 +59,7 @@ class DHCPserver {
             eth.payload = ip;
             const dhcpd = new DHCPD("ACK");
             ip.payload = dhcpd;
+            dhcpd.config = { gateway: this.gateway, subnet: this.subnet };
             window.sendpack(pack);
           }
         });
@@ -99,6 +103,7 @@ class DHCPserver {
   }
   DHCPConfig() {
     this.ip = this.htmlElem.querySelector("[name=ip]").value || "";
+    this.gateway = this.htmlElem.querySelector("[name=gw]").value || "";
     this.drawData();
   }
 }

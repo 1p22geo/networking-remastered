@@ -19,17 +19,27 @@ function addHost() {
         <th>IP</th>
         <td class="ip">undefined</td>
       </tr>
+      <tr>
+        <th>Default gateway</th>
+        <td class="gw">undefined</td>
+      </tr>
     </table>
     <div class="actionbar">
       <dialog class="host-config">
-        <form class="host-form">
+        <form class="host-form form">
           <h2>Host config</h2>
           
         IP address: <input name="ip">
+        Default gateway: <input name="gw">
             <div class="actionbar">
             DHCP autoconfig
       <img src="img/DHCP.png" class="button dhcp-button" title="Use DHCP to automagically configure host"/>
             </div>
+          <div class="actionbar">
+            Ping gateway
+      <img src="img/DHCP.png" class="button ping-button" title="Send ICMP PING to the configured gateway address"/>
+            </div>
+
           </form>
           <button class="close-config" autofocus>Save</button>
         </dialog>
@@ -81,20 +91,26 @@ function addDHCP() {
     <table>
       <tr>
         <th>MAC</th>
-        <td class="mac">AF:43:3B:37:B1:BC</td>
+        <td class="mac">undefined</td>
       </tr>
       <tr>
         <th>IP</th>
         <td class="ip">undefined</td>
       </tr>
+      <tr>
+        <th>Default gateway</th>
+        <td class="gw">undefined</td>
+      </tr>
+
     </table>
     <div class="actionbar">
       <img src="img/DHCP.png" class="button dhcp-button"/>
     </div>
     <dialog>
-      <form class="form-dhcp">
+      <form class="form form-dhcp">
         <h2>DHCP server config</h2>
         IP address: <input name="ip">
+        Default gateway: <input name="gw">
         Subnet mask: <select name="subnet"><option value="/24">/24 (class C) &lt;-- recommended</option><option value="/16">/16 (class B)</option><option value="/8">/8 (class A)</option></select>
       </form>
       <button class="close-dhcp" autofocus>Save</button>
