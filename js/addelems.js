@@ -21,7 +21,19 @@ function addHost() {
       </tr>
     </table>
     <div class="actionbar">
-      <img src="img/DHCP.png" class="button dhcp-button"/>
+      <dialog class="host-config">
+        <form class="host-form">
+          <h2>Host config</h2>
+          
+        IP address: <input name="ip">
+            <div class="actionbar">
+            DHCP autoconfig
+      <img src="img/DHCP.png" class="button dhcp-button" title="Use DHCP to automagically configure host"/>
+            </div>
+          </form>
+          <button class="close-config" autofocus>Save</button>
+        </dialog>
+      <img src="img/DHCP.png" class="button config-button" title="Configure host"/>
     </div>
   </div>
 </div>
@@ -41,12 +53,12 @@ function addSwitch() {
   </div>
   <div class="tooltip">
     <h2>Switch</h2>
-    Mapped hosts
+    Known hosts
     <ul class="switch-hosts">
 
     </ul>
     <div class="actionbar">
-      <img src="img/DHCP.png" class="button reset-button"/>
+      <img src="img/DHCP.png" class="button reset-button" title="Reset known hosts"/>
     </div>
   </div>
 </div>

@@ -4,6 +4,16 @@ class Host {
     this.mac = randMAC();
     this.ip = "0.0.0.0";
     this.drawData();
+    this.dialog = this.htmlElem.querySelector("dialog");
+    this.htmlElem.querySelector(".config-button").onclick = () => {
+      this.dialog.showModal();
+    };
+    this.htmlElem.querySelector(".close-config").onclick = () => {
+      this.dialog.close();
+    };
+    this.htmlElem.querySelector(".host-form").onchange = () => {
+      this.updateConfig();
+    };
   }
   getpos() {
     return {
@@ -24,10 +34,15 @@ class Host {
     return true;
   }
   drawData() {
+    this.htmlElem.querySelector("[name=ip]").value = this.ip;
     this.htmlElem.querySelector(".mac").innerText = this.mac;
     this.htmlElem.querySelector(".ip").innerText = this.ip;
     this.htmlElem.querySelector(".dhcp-button").onclick =
       this.DHCPConfig.bind(this);
+  }
+  updateConfig() {
+    this.ip = this.htmlElem.querySelector("[name=ip]").value;
+    this.drawData();
   }
   onRecv(packet) {
     const layers = flatten_layers(packet);

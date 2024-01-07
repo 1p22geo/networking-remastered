@@ -26,6 +26,9 @@ class Switch {
   }
   drawData() {
     const ul = this.htmlElem.querySelector(".switch-hosts");
+    this.htmlElem.querySelector(".reset-button").onclick = (() => {
+      this.switchTable = {};
+    }).bind(this);
     ul.textContent = "";
     Array.from(Object.keys(this.switchTable)).forEach((mac) => {
       let el = document.createElement("li");

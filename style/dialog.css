@@ -14,3 +14,11 @@ dialog {
   flex-flow: column nowrap;
   margin-bottom: 4rem;
 }
+
+.actionbar {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+}
