@@ -101,7 +101,7 @@ class Host {
       if (layers[1].msg == "RESPONSE") {
         if ((layers[1].dest = this.ip)) {
           this.ARPtable[layers[1].src] = layers[0].src;
-          q = [...this.TXqueue];
+          let q = [...this.TXqueue];
           this.TXqueue = [];
           q.forEach((packet) => this.sendL3(packet));
         }
