@@ -20,7 +20,7 @@ function addHost() {
         <td class="ip">undefined</td>
       </tr>
       <tr>
-        <th>Default gateway</th>
+        <th>Gateway</th>
         <td class="gw">undefined</td>
       </tr>
     </table>
@@ -30,7 +30,7 @@ function addHost() {
           <h2>Host config</h2>
           
         IP address: <input name="ip">
-        Default gateway: <input name="gw">
+        Gateway: <input name="gw">
             <div class="actionbar">
             DHCP autoconfig
       <img src="img/DHCP.png" class="button dhcp-button" title="Use DHCP to automagically configure host"/>
@@ -98,7 +98,7 @@ function addDHCP() {
         <td class="ip">undefined</td>
       </tr>
       <tr>
-        <th>Default gateway</th>
+        <th>Gateway</th>
         <td class="gw">undefined</td>
       </tr>
 
@@ -110,7 +110,7 @@ function addDHCP() {
       <form class="form form-dhcp">
         <h2>DHCP server config</h2>
         IP address: <input name="ip">
-        Default gateway: <input name="gw">
+        Gateway: <input name="gw">
         Subnet mask: <select name="subnet"><option value="/24">/24 (class C) &lt;-- recommended</option><option value="/16">/16 (class B)</option><option value="/8">/8 (class A)</option></select>
       </form>
       <button class="close-dhcp" autofocus>Save</button>

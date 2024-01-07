@@ -97,6 +97,32 @@ class Host {
   }
   onRecv(packet) {
     const layers = flatten_layers(packet);
+    if (layers.map((l) => l._packtype).includes("ARP")) {
+      if (layers[1].msg == "RESPONSE") {
+        if ((layers[1].dest = this.ip)) {
+          this.ARPtable[layers[1].src] = layers[0].src;
+          q = [...this.TXqueue];
+          this.TXqueue = [];
+          q.forEach((packet) => this.sendL3(packet));
+        }
+      }
+      if (layers[1].msg == "REQUEST") {
+        if ((layers[1].dest = this.ip)) {
+          this.ARPtable[layers[1].src] = layers[0].src;
+          window.links.forEach((link) => {
+            if (link.start == this) {
+              const dest = link.end;
+              const pack = new Packet(this, dest);
+              const eth = new Ether(this.mac, layers[0].src);
+              pack.payload = eth;
+              const arp = new ARP(this.ip, layers[1].src, "RESPONSE");
+              eth.payload = arp;
+              window.sendpack(pack);
+            }
+          });
+        }
+      }
+    }
     if (layers.map((l) => l._packtype).includes("DHCPD")) {
       if (layers[2].msg == "ACK") {
         this.ip = layers[1].dest;
