@@ -56,8 +56,6 @@ function dragElement(elmnt) {
     }
     e = e || window.event;
     e.preventDefault();
-    console.log(e.clientX, e.clientY);
-    // get the mouse cursor position at startup:
     if (window.action == "cursor") {
       pos3 = e.clientX;
       pos4 = e.clientY;

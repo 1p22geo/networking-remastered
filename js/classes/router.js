@@ -135,6 +135,28 @@ class Router {
   forward(packet) {
     console.log("Forwarding packet:");
     console.log(packet);
+    const layers = flatten_layers(packet);
+    for (let n = 0; n < this.routingTable.length; n++) {
+      const route = this.routingTable[n];
+      const routeIP = route.ip.split(".").map((e) => parseInt(e));
+      const ip = layers[1].dest.split(".").map((e) => parseInt(e));
+      const ifc = parseInt(route.interface.slice(3));
+      switch (route.subnet) {
+        case "/24": {
+          if (
+            routeIP[0] == ip[0] &&
+            routeIP[1] == ip[1] &&
+            routeIP[2] == ip[2]
+          ) {
+            if (route.dest == "0.0.0.0") {
+              this.interfaces[ifc].sendL3(layers[1]);
+              return;
+            }
+            this.interfaces[ifc].sendL3(layers[1], route.dest);
+          }
+        }
+      }
+    }
   }
 }
 class RouterIF {
@@ -191,17 +213,18 @@ class RouterIF {
     this.htmlElem.querySelector(".ip").innerText = this.ip + this.subnet;
     this.htmlElem.querySelector(".dhcp-button").onclick =
       this.DHCPConfig.bind(this);
+    parent.drawData();
   }
   updateConfig() {
     this.ip = this.htmlElem.querySelector("[name=ip]").value;
     this.drawData();
   }
-  sendL3(packet) {
+  sendL3(packet, dest_ip = null) {
     const layers = [packet, ...flatten_layers(packet)];
     if (layers[0]._layer != "L3") {
       throw "Use the low-level window.sendpack instead.";
     }
-    const ip = layers[0].dest;
+    const ip = dest_ip || layers[0].dest;
     if (!this.ARPtable.hasOwnProperty(ip)) {
       this.discover(ip);
       this.TXqueue.push(packet);
@@ -235,7 +258,7 @@ class RouterIF {
   onRecv(packet) {
     const layers = flatten_layers(packet);
     if (layers.map((l) => l._packtype).includes("ICMP")) {
-      if ((layers[1].dest = this.ip)) {
+      if (layers[1].dest == this.ip) {
         if (layers[2].msg == "PING") {
           const ip = new IP(this.ip, layers[1].src);
           const icmp = new ICMP("ECHO");

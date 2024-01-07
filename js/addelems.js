@@ -36,8 +36,8 @@ function addHost() {
       <img src="img/DHCP.png" class="button dhcp-button" title="Use DHCP to automagically configure host"/>
             </div>
           <div class="actionbar">
-            Ping gateway
-      <img src="img/DHCP.png" class="button ping-button" title="Send ICMP PING to the configured gateway address"/>
+            Ping host
+      <img src="img/DHCP.png" class="button ping-button" title="Send ICMP PING to some host"/>
             </div>
 
           </form>
@@ -93,7 +93,7 @@ function addRouter() {
       <form class="form config-form">
         <h2>Router config</h2>
             Routing table
-          <div class="routes">
+          <div class="routes" title="Topmost routes have most priority">
             </div>
             Interfaces
           <div class="interfaces">

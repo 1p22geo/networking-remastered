@@ -43,8 +43,24 @@ class Host {
       throw "Use the low-level window.sendpack instead.";
     }
     const ip = layers[0].dest;
-    if (!this.ARPtable.hasOwnProperty(ip)) {
-      this.discover(ip);
+    let dest_ip;
+    const block_ip = layers[0].dest.split(".").map((e) => parseInt(e));
+    const host_ip = this.ip.split(".").map((e) => parseInt(e));
+    switch (this.subnet) {
+      case "/24": {
+        if (
+          block_ip[0] == host_ip[0] &&
+          block_ip[1] == host_ip[1] &&
+          block_ip[2] == host_ip[2]
+        ) {
+          dest_ip = ip;
+        } else {
+          dest_ip = this.gateway;
+        }
+      }
+    }
+    if (!this.ARPtable.hasOwnProperty(dest_ip)) {
+      this.discover(dest_ip);
       this.TXqueue.push(packet);
       return;
     }
@@ -52,7 +68,7 @@ class Host {
       if (link.start == this) {
         const dest = link.end;
         const pack = new Packet(this, dest);
-        const eth = new Ether(this.mac, this.ARPtable[ip]);
+        const eth = new Ether(this.mac, this.ARPtable[dest_ip]);
         pack.payload = eth;
         eth.payload = packet;
         window.sendpack(pack);
@@ -74,7 +90,7 @@ class Host {
     });
   }
   pingGW() {
-    const ip = new IP(this.ip, this.gateway);
+    const ip = new IP(this.ip, prompt("What IP to ping?", this.gateway));
     const icmp = new ICMP("PING");
     ip.payload = icmp;
     this.sendL3(ip);
@@ -98,7 +114,7 @@ class Host {
   onRecv(packet) {
     const layers = flatten_layers(packet);
     if (layers.map((l) => l._packtype).includes("ICMP")) {
-      if ((layers[1].dest = this.ip)) {
+      if (layers[1].dest == this.ip) {
         if (layers[2].msg == "PING") {
           const ip = new IP(this.ip, layers[1].src);
           const icmp = new ICMP("ECHO");
