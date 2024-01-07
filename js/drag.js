@@ -51,8 +51,12 @@ function dragElement(elmnt) {
   });
 
   function dragMouseDown(e) {
+    if (window.dragDisabled) {
+      return;
+    }
     e = e || window.event;
     e.preventDefault();
+    console.log(e.clientX, e.clientY);
     // get the mouse cursor position at startup:
     if (window.action == "cursor") {
       pos3 = e.clientX;
@@ -60,9 +64,16 @@ function dragElement(elmnt) {
     }
     if (window.action == "connect") {
       linkstartx =
-        parseInt(e.target.parentElement.parentElement.style.left || "120") + 25;
+        parseInt(
+          e.target.parentElement.parentElement.getBoundingClientRect().x ||
+            "120",
+        ) +
+        e.target.parentElement.parentElement.getBoundingClientRect().width / 2;
       linkstarty =
-        parseInt(e.target.parentElement.parentElement.style.top || "0") + 25;
+        parseInt(
+          e.target.parentElement.parentElement.getBoundingClientRect().y || "0",
+        ) +
+        e.target.parentElement.parentElement.getBoundingClientRect().height / 2;
     }
     document.onmouseup = closeDragElement;
     // call a function whenever the cursor moves:
@@ -70,6 +81,9 @@ function dragElement(elmnt) {
   }
 
   function elementDrag(e) {
+    if (window.dragDisabled) {
+      return;
+    }
     e = e || window.event;
     e.preventDefault();
     // calculate the new cursor position:
@@ -83,8 +97,8 @@ function dragElement(elmnt) {
       elmnt.style.left = elmnt.offsetLeft - pos1 + "px";
     }
     if (window.action == "connect") {
-      linkendx = e.clientX;
-      linkendy = e.clientY;
+      linkendx = +e.clientX;
+      linkendy = +e.clientY;
     }
     renderCanvas();
   }

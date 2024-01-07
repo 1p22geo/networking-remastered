@@ -7,11 +7,12 @@
     <link rel="stylesheet" href="style/dialog.css" />
     <script src="js/lib/constants.js" defer></script>
     <script src="js/lib/hex.js" defer></script>
+    <script src="js/lib/layers.js" defer></script>
     <script src="js/classes/packet.js" defer></script>
     <script src="js/classes/host.js" defer></script>
     <script src="js/classes/switch.js" defer></script>
     <script src="js/classes/dhcp.js" defer></script>
-    <script src="js/lib/layers.js" defer></script>
+    <script src="js/classes/router.js" defer></script>
     <script src="js/actions.js" defer></script>
     <script src="js/addelems.js" defer></script>
     <script src="js/drag.js" defer></script>
@@ -40,28 +41,16 @@
           add devices
           <div class="line"></div>
         </div>
-        <div
-          id="addhost"
-          class="button"
-          onclick="addHost()"
-          title="Add a regular host"
-        >
+        <div class="button" onclick="addHost()" title="Add a regular host">
           <img src="img/host.png" />
         </div>
-        <div
-          id="addswitch"
-          class="button"
-          onclick="addSwitch()"
-          title="Add a network switch"
-        >
+        <div class="button" onclick="addSwitch()" title="Add a network switch">
           <img src="img/switch.png" />
         </div>
-        <div
-          id="addhost"
-          class="button"
-          onclick="addDHCP()"
-          title="Add a DHCP server"
-        >
+        <div class="button" onclick="addRouter()" title="Add a router">
+          <img src="img/router.png" />
+        </div>
+        <div class="button" onclick="addDHCP()" title="Add a DHCP server">
           <img src="img/DHCPserver.png" />
         </div>
       </aside>

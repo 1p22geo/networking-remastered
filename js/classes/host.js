@@ -109,7 +109,7 @@ class Host {
     }
     if (layers.map((l) => l._packtype).includes("ARP")) {
       if (layers[1].msg == "RESPONSE") {
-        if ((layers[1].dest == this.ip)) {
+        if (layers[1].dest == this.ip) {
           this.ARPtable[layers[1].src] = layers[0].src;
           let q = [...this.TXqueue];
           this.TXqueue = [];
@@ -117,7 +117,7 @@ class Host {
         }
       }
       if (layers[1].msg == "REQUEST") {
-        if ((layers[1].dest == this.ip)) {
+        if (layers[1].dest == this.ip) {
           this.ARPtable[layers[1].src] = layers[0].src;
           window.links.forEach((link) => {
             if (link.start == this) {

@@ -79,6 +79,48 @@ function addSwitch() {
   document.querySelector("#canvas").appendChild(div);
 }
 
+function addRouter() {
+  let div = document.createElement("div");
+  div.innerHTML = `
+<div class="draggable">
+   <div class="handle tooltip-container">
+     <img src="img/router.png" />
+  <div class="tooltip">
+    <h2>Router</h2>
+    <div class="actionbar">
+      <img src="img/DHCP.png" class="button config-button" title="Open router config"/>
+      <dialog>
+      <form class="form config-form">
+        <h2>Router config</h2>
+            Routing table
+          <div class="routes">
+            </div>
+            Interfaces
+          <div class="interfaces">
+              </div>
+            <div class="actionbar">
+      Add route<img src="img/add.svg" class="button add-route" title="Add a new route" width=20 height=20/>
+    </div>
+
+        <div class="actionbar">
+      Add interface<img src="img/DHCP.png" class="button add-button" title="Add a network interface"/>
+    </div>
+
+      </form>
+      <button class="close-config" autofocus>Save</button>
+    </dialog>
+
+    </div>
+  </div>
+  </div>
+</div>
+`;
+  dragElement(div.children[0]);
+  sw = new Router(div.children[0]);
+  window.devices.push(sw);
+  document.querySelector("#canvas").appendChild(div);
+}
+
 function addDHCP() {
   let div = document.createElement("div");
   div.innerHTML = `
