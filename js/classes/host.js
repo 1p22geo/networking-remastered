@@ -38,7 +38,7 @@ class Host {
     return true;
   }
   sendL3(packet) {
-    const layers = flatten_layers(packet);
+    const layers = [packet, ...flatten_layers(packet)];
     if (layers[0]._layer != "L3") {
       throw "Use the low-level window.sendpack instead.";
     }
