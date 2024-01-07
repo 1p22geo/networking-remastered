@@ -97,6 +97,16 @@ class Host {
   }
   onRecv(packet) {
     const layers = flatten_layers(packet);
+    if (layers.map((l) => l._packtype).includes("ICMP")) {
+      if ((layers[1].dest = this.ip)) {
+        if (layers[2].msg == "PING") {
+          const ip = new IP(this.ip, layers[1].src);
+          const icmp = new ICMP("ECHO");
+          ip.payload = icmp;
+          this.sendL3(ip);
+        }
+      }
+    }
     if (layers.map((l) => l._packtype).includes("ARP")) {
       if (layers[1].msg == "RESPONSE") {
         if ((layers[1].dest = this.ip)) {
