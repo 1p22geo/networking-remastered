@@ -213,7 +213,7 @@ class RouterIF {
     this.htmlElem.querySelector(".ip").innerText = this.ip + this.subnet;
     this.htmlElem.querySelector(".dhcp-button").onclick =
       this.DHCPConfig.bind(this);
-    parent.drawData();
+    this.parent.drawData();
   }
   updateConfig() {
     this.ip = this.htmlElem.querySelector("[name=ip]").value;
