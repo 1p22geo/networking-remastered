@@ -1,0 +1,29 @@
+.terminal-window {
+  background: #222;
+  color: #2f3;
+  height: 500px;
+  width: 800px;
+  overflow: scroll;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  text-align: left;
+  justify-content: flex-end;
+}
+.term-form {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  width: 800px;
+  background: #222;
+  color: #2f3;
+}
+.cmd {
+  outline: none;
+  border: none;
+  background: #222;
+  color: #2f3;
+  padding-left: 4px;
+}
+.host-terminal * {
+  font-family: monospace;
+}

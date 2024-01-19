@@ -1,5 +1,6 @@
 class Host {
   constructor(elem) {
+    this.os = null;
     this.htmlElem = elem;
     this.mac = randMAC();
     this.ip = "0.0.0.0";
@@ -8,7 +9,35 @@ class Host {
     this.ARPtable = {};
     this.TXqueue = [];
     this.drawData();
-    this.dialog = this.htmlElem.querySelector("dialog");
+    this.dialog = this.htmlElem.querySelector(".host-config");
+    this.term = this.htmlElem.querySelector(".host-terminal");
+    this.htmlElem.querySelector(".term-form").onsubmit = (e) => {
+      e.preventDefault();
+      let prompt = document.createElement("pre");
+      prompt.innerText = "# " + this.term.querySelector("input").value;
+      this.term.querySelector(".terminal-window").appendChild(prompt);
+
+      try {
+        let c = this.os.sh(this.term.querySelector("input").value.split(" "));
+        c.hook((res) => {
+          let line = document.createElement("pre");
+          line.innerText = res.stdout;
+          this.term.querySelector(".terminal-window").appendChild(line);
+        });
+      } catch {
+        let line = document.createElement("pre");
+        line.innerText = `unknown command or executable: ${this.term.querySelector("input").value.split(" ")[0]}`;
+        this.term.querySelector(".terminal-window").appendChild(line);
+      }
+      this.term.querySelector("input").value = "";
+    };
+    this.htmlElem.querySelector(".terminal-button").onclick = () => {
+      this.term.showModal();
+    };
+    this.htmlElem.querySelector(".close-term").onclick = () => {
+      this.term.close();
+    };
+
     this.htmlElem.querySelector(".config-button").onclick = () => {
       this.dialog.showModal();
     };

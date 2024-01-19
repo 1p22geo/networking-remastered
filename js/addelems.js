@@ -25,6 +25,13 @@ function addHost() {
       </tr>
     </table>
     <div class="actionbar">
+      <dialog class="host-terminal">
+      <img src="img/close.png" class="button close-term" title="Close terinal"/>
+        <div class="terminal-window">
+        </div>
+        
+        <form class="term-form">#<input class="cmd"></form>
+      </dialog>
       <dialog class="host-config">
         <form class="host-form form">
           <h2>Host config</h2>
@@ -44,12 +51,15 @@ function addHost() {
           <button class="close-config" autofocus>Save</button>
         </dialog>
       <img src="img/DHCP.png" class="button config-button" title="Configure host"/>
+      <img src="img/terminal.svg" class="button terminal-button" title="Start terminal" width="40" height="40" />
     </div>
   </div>
 </div>
 `;
   dragElement(div.children[0]);
-  host = new Host(div.children[0]);
+  let host = new Host(div.children[0]);
+  let os = new OSKernel(host);
+  host.os = os;
   window.devices.push(host);
   document.querySelector("#canvas").appendChild(div);
 }
