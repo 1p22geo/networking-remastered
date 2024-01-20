@@ -9,6 +9,7 @@ class Host {
     this.ARPtable = {};
     this.TXqueue = [];
     this.drawData();
+
     this.dialog = this.htmlElem.querySelector(".host-config");
     this.term = this.htmlElem.querySelector(".host-terminal");
     this.htmlElem.querySelector(".term-form").onsubmit = (e) => {
@@ -16,7 +17,6 @@ class Host {
       let prompt = document.createElement("pre");
       prompt.innerText = "# " + this.term.querySelector("input").value;
       this.term.querySelector(".terminal-window").appendChild(prompt);
-
       try {
         let c = this.os.sh(this.term.querySelector("input").value.split(" "));
         c.hook((res) => {
@@ -210,7 +210,7 @@ class Host {
         const pack = new Packet(this, dest);
         const eth = new Ether(this.mac, ETHER_BROADCAST);
         pack.payload = eth;
-        const ip = new IP("0.0.0.0", "255.255.255.255");
+        const ip = new IP(IP_NULL, IP_BROADCAST);
         eth.payload = ip;
         const dhcpd = new DHCPD("DISCOVER");
         ip.payload = dhcpd;

@@ -31,9 +31,20 @@ function createFS() {
               'writeline - writes a single line to a file.\n\twriteline note hello world - will save "hello world" in file "note"',
             );
             break;
+          case "touch":
+            handle.printf(
+              "touch - creates a filen\n\ttouch file2 - will create a file named file2",
+            );
+            break;
+          case "rm":
+            handle.printf(
+              "rm - removes a file\n\trm file2 - will remove the file named file2\n\tplease don't remove the built-in executables.",
+            );
+            break;
+
           default:
             handle.printf(`
-Nothing OS 1 - literally 4 executables and a text file.
+Nothing OS 1 - literally eight executables and a text file.
 
   This is a very simple simulated OS, remotely resembling Linux.
   Does not support directories, standard input, or anything you're used to.
