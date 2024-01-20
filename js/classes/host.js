@@ -26,7 +26,9 @@ class Host {
         });
       } catch {
         let line = document.createElement("pre");
-        line.innerText = `unknown command or executable: ${this.term.querySelector("input").value.split(" ")[0]}`;
+        line.innerText = `unknown command or executable: ${
+          this.term.querySelector("input").value.split(" ")[0]
+        }`;
         this.term.querySelector(".terminal-window").appendChild(line);
       }
       this.term.querySelector("input").value = "";
