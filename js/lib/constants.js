@@ -9,3 +9,4 @@ const ICON_SIZES = {
   PACKET: [40, 30],
   DHCP: [80, 80],
 };
+const KERN_LATE_HOOKS = ["join"];

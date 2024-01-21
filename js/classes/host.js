@@ -17,19 +17,32 @@ class Host {
       let prompt = document.createElement("pre");
       prompt.innerText = "# " + this.term.querySelector("input").value;
       this.term.querySelector(".terminal-window").appendChild(prompt);
+      this.term.querySelector(".cmd").disabled = true;
+      this.term.querySelector(".prompt").style.display = "none";
       try {
-        let c = this.os.sh(this.term.querySelector("input").value.split(" "));
-        c.hook((res) => {
-          let line = document.createElement("pre");
-          line.innerText = res.stdout;
-          this.term.querySelector(".terminal-window").appendChild(line);
-        });
-      } catch {
         let line = document.createElement("pre");
-        line.innerText = `unknown command or executable: ${
-          this.term.querySelector("input").value.split(" ")[0]
-        }`;
         this.term.querySelector(".terminal-window").appendChild(line);
+        this.os.sh(this.term.querySelector("input").value.split(" "), [
+          [
+            "stdout",
+            (_, res) => {
+              line.innerText = res;
+            },
+          ],
+          [
+            "join",
+            () => {
+              this.term.querySelector(".cmd").disabled = false;
+              this.term.querySelector(".prompt").style.display = "inline";
+            },
+          ],
+        ]);
+      } catch (e) {
+        let line = document.createElement("pre");
+        line.innerText = e;
+        this.term.querySelector(".terminal-window").appendChild(line);
+        this.term.querySelector(".cmd").disabled = false;
+        this.term.querySelector(".prompt").style.display = "inline";
       }
       this.term.querySelector("input").value = "";
     };

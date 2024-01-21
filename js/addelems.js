@@ -30,7 +30,7 @@ function addHost() {
         <div class="terminal-window">
         </div>
         
-        <form class="term-form">#<input class="cmd"></form>
+        <form class="term-form"><span class="prompt">#</span><input class="cmd"></form>
       </dialog>
       <dialog class="host-config">
         <form class="host-form form">
