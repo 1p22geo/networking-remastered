@@ -2,7 +2,21 @@ class OSKernel {
   constructor(hw) {
     this.hw = hw;
     this.processes = [];
+    this.packetHooks = [];
     this.fs = createFS.bind(this)();
+  }
+  hwPacketHook(hook) {
+    this.packetHooks.push(hook);
+  }
+  rm_hwPacketHook(hook) {
+    if (this.packetHooks.includes(hook)) {
+      this.packetHooks.splice(this.packetHooks.indexOf(hook), 1);
+    }
+  }
+  onRecv(pack) {
+    this.packetHooks.forEach((hook) => {
+      hook(pack);
+    });
   }
   run(proc, argv, hooks = []) {
     const p = new Process(proc, argv, hooks);

@@ -91,6 +91,32 @@ Nothing OS 1 - literally eight executables and a text file.
         return 0;
       },
     },
+    exit: {
+      type: "exec",
+      content: async () => {
+        this.hw.term.close();
+      },
+    },
+    ping: {
+      type: "exec",
+      content: (handle, argv) => {
+        let host = argv[1];
+        const ip = new IP(this.hw.ip, host);
+        const icmp = new ICMP("PING");
+        ip.payload = icmp;
+        this.hw.sendL3(ip);
+        handle.printf(`ICMP PING sent to ${host}\n`);
+
+        return new Promise((resolve) => {
+          function __hook(pack) {
+            handle.printf(`Got response from: ${pack.payload.payload.src}`);
+            this.rm_hwPacketHook(__hook);
+            resolve(0);
+          }
+          this.hwPacketHook(__hook.bind(this));
+        });
+      },
+    },
     touch: {
       type: "exec",
       content: async (handle, argv) => {

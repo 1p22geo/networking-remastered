@@ -164,6 +164,7 @@ class Host {
           const icmp = new ICMP("ECHO");
           ip.payload = icmp;
           this.sendL3(ip);
+          return;
         }
       }
     }
@@ -174,6 +175,7 @@ class Host {
           let q = [...this.TXqueue];
           this.TXqueue = [];
           q.forEach((packet) => this.sendL3(packet));
+          return;
         }
       }
       if (layers[1].msg == "REQUEST") {
@@ -192,6 +194,7 @@ class Host {
           });
         }
       }
+      return;
     }
     if (layers.map((l) => l._packtype).includes("DHCPD")) {
       if (layers[2].msg == "ACK") {
@@ -199,6 +202,7 @@ class Host {
         this.gateway = layers[2].config.gateway;
         this.subnet = layers[2].config.subnet;
         this.drawData();
+        return;
       }
       if (layers[2].msg == "OFFER") {
         const mac = layers[0].src;
@@ -216,6 +220,11 @@ class Host {
           }
         });
       }
+      return;
+    }
+    // some other packet, which is not handled by low-level drivers or hardware itself
+    if (layers[0].dest == this.mac) {
+      this.os.onRecv(packet);
     }
   }
   DHCPConfig() {
