@@ -1,3 +1,11 @@
+class RoutedPacket{
+  constructor(pack, dest){
+    this.pack = pack;
+    this.dest = dest;
+    this.__routedpack = true;
+  }
+}
+
 class Router {
   constructor(elem) {
     this.htmlElem = elem;
@@ -152,7 +160,7 @@ class Router {
               this.interfaces[ifc].sendL3(layers[1]);
               return;
             }
-            this.interfaces[ifc].sendL3(layers[1], route.dest);
+            this.interfaces[ifc].sendL3(new RoutedPacket(layers[1], route.dest));
           }
         }
       }
@@ -219,14 +227,24 @@ class RouterIF {
     this.ip = this.htmlElem.querySelector("[name=ip]").value;
     this.drawData();
   }
-  sendL3(packet, dest_ip = null) {
+  sendL3(packet) {
+    let ip;
+    let routepack = false
+    if(packet.__routedpack){
+      ip = packet.dest
+      routepack = true
+      packet = packet.pack
+    }
     const layers = [packet, ...flatten_layers(packet)];
     if (layers[0]._layer != "L3") {
       throw "Use the low-level window.sendpack instead.";
     }
-    const ip = dest_ip || layers[0].dest;
+    ip = ip||layers[0].dest
     if (!this.ARPtable.hasOwnProperty(ip)) {
       this.discover(ip);
+      if(routepack){
+        this.TXqueue.push(new RoutedPacket(packet, ip))
+      }
       this.TXqueue.push(packet);
       return;
     }

@@ -14,6 +14,7 @@
     <script src="js/classes/switch.js" defer></script>
     <script src="js/classes/dhcp.js" defer></script>
     <script src="js/classes/router.js" defer></script>
+    <script src="js/classes/vlan.js" defer></script>
     <script src="js/os/process.js" defer></script>
     <script src="js/os/cfs.js" defer></script>
     <script src="js/os/kernel.js" defer></script>
@@ -57,6 +58,10 @@
         <div class="button" onclick="addDHCP()" title="Add a DHCP server">
           <img src="img/DHCPserver.png" />
         </div>
+        <div class="button" onclick="addVLANSwitch()" title="Add a VLAN-compatible switch">
+          <img src="img/switch.png" />
+        </div>
+
       </aside>
       <div id="canvas">
         <canvas id="maincanvas"></canvas>
