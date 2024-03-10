@@ -32,7 +32,9 @@ dialog {
 .interface-table {
   grid-template-columns: 4rem 10rem 10rem;
 }
-
+.vlan-table {
+  grid-template-columns: 10rem 10rem;
+}
 .rowspan-2 {
   grid-column: 1/3;
 }

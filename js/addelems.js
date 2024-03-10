@@ -89,6 +89,31 @@ function addSwitch() {
   document.querySelector("#canvas").appendChild(div);
 }
 
+function addVLANSwitch() {
+  let div = document.createElement("div");
+  div.innerHTML = `
+<div class="draggable">
+   <div class="handle tooltip-container">
+     <img src="img/routerIF.png" />
+  <div class="tooltip">
+    <h2>Switch (VLAN compatible)</h2>
+    Added VLANs
+    <div class="vlans">
+
+    </div>
+    <div class="actionbar">
+      <img src="img/DHCP.png" class="button add-button" title="Add VLAN"/>
+    </div>
+  </div>
+</div>
+</div>
+`;
+  dragElement(div.children[0]);
+  sw = new VLANSwitch(div.children[0]);
+  window.devices.push(sw);
+  document.querySelector("#canvas").appendChild(div);
+}
+
 function addRouter() {
   let div = document.createElement("div");
   div.innerHTML = `
